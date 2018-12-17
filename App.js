@@ -1,8 +1,28 @@
 import React, {Component} from 'react';
 
-import { StyleSheet, Text, View,TextInput } from 'react-native';
+import { StyleSheet, Text, View,TextInput,TouchableOpacity } from 'react-native';
 import {constants} from 'expo';
 export default class App extends React.Component {
+ constructor(props){
+   super(props)
+   this.state= {
+     text:"",
+          todo : []
+   } 
+  };
+addTodo (){
+   let todo = this.state.todo;
+   todo.push(this.state.text)
+   this.setState({
+     todo: todo,
+     text: ''
+   })
+}
+
+
+
+
+
   render() {
     return (
     
@@ -12,23 +32,38 @@ export default class App extends React.Component {
          
       
              <View style={styles.view1}>    
-             <TextInput style = {styles.inputText}>
-             </TextInput>
-        
-        
-             <Text style= {styles.addButton}>+
-      
+             <TextInput style = {styles.inputText} onChangeText={(text) => {this.setState({text: text})}}
+             value = {this.state.text} />
+
+            <TouchableOpacity onPress={this.addTodo.bind(this)}>   
+             <Text style= {styles.addButton} >+
+    
              </Text>
+             </TouchableOpacity> 
              </View>  
+
+             <View>
+               {this.state.todo.map((text, index) => {
+                 return (
+                 <Text style={styles.todoView} key={index.toString()}>
+                  {text}
+                 </Text>
+                 )
+               })}
+              
+             </View>
+            
+            
       </View>
-    );
+    )
   }
 }
 
-const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#124',
+    padding: 10
   },
  inputText:
  {
@@ -50,4 +85,9 @@ addButton:{
     
 
   },
+
+todoView:{
+fontSize:30,
+fontWeight: "bold",
+color:"#ffffff",}
 });
